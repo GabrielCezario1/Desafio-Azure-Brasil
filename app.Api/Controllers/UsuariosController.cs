@@ -60,7 +60,7 @@ public class UsuariosController : ControllerBase
     /// <param name="request">Edita propriedades do usuário</param>
     /// <returns>Dados do usuário atualizado.</returns>
     [HttpPut]
-    public async Task<ActionResult<UsuariosResponse>> Editar([FromQuery] UsuariosEditarRequest request)
+    public async Task<ActionResult<UsuariosResponse>> Editar([FromBody] UsuariosEditarRequest request)
     {
         UsuariosResponse usuario = await usuariosAppServico.Editar(request);
 

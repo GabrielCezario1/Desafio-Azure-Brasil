@@ -19,7 +19,6 @@ public class UsuariosServico : IUsuariosServico
         var usuario = await Validar(comando.Id);
         usuario.SetNome(comando.Nome);
         usuario.SetEmail(comando.Email);
-        usuario.SetSenha(comando.Senha);
         return await usuariosRepositorio.Editar(usuario);
     }
 
