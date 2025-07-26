@@ -99,6 +99,6 @@ dotnet run --project app.Api
 A aplicação estará disponível em `http://localhost:5000` (ou a porta configurada no seu ambiente). A documentação da API, gerada pelo Swagger, pode ser acessada em `http://localhost:5000/swagger`.
 
 ## Link do repositório do Front end: https://github.com/GabrielCezario1/App-site.git
-
+  
 ### ✨ Contribuições
- Sinta-se à vontade para abrir issues, propor melhorias ou enviar pull requests. Toda contribuição é bem-vinda para tornar esse template ainda mais completo!
+Sinta-se à vontade para abrir issues, propor melhorias ou enviar pull requests. Toda contribuição é bem-vinda para tornar esse template ainda mais completo!
