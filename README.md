@@ -68,7 +68,7 @@ Abra o arquivo `app.Api/appsettings.json` e atualize a `DefaultConnection` com a
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=appdb;User=root;Password=root;"
+  "DefaultConnection": "Server=localhost;Database=(nomedoseubanco);User=(usuariodoseubanco);Password=(senhadoseubanco);"
 }
 ```
 
