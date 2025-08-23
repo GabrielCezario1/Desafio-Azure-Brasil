@@ -1,0 +1,61 @@
+
+
+@import 'variables';
+
+$card-bg-dark: $card-bg-dark;
+
+.card {
+    --bs-card-bg: #{$card-bg-dark};
+}
+
+body {
+  background-color: $body-bg-dark;
+  color: $body-color-dark;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+}
+
+.form-control {
+  background-color: #fff;
+  border-color: #e0e0e0;
+  color: #0A0B0D;
+}
+
+.form-control:focus {
+  background-color: #fff;
+  border-color: $primary;
+  color: #0A0B0D;
+  box-shadow: 0 0 0 0.25rem rgba(0, 82, 255, 0.25);
+}
+
+.btn-primary {
+  transition: transform 0.2s ease, background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+}
+
+.btn-outline-info {
+  color: #0052FF;
+  border-color: #0052FF;
+}
+
+.btn-outline-info:hover {
+  color: #fff;
+  background-color: #0052FF;
+  border-color: #0052FF;
+}

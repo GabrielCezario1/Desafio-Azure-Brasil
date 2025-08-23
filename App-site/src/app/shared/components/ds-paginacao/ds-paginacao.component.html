@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center align-items-center flex-wrap mt-2">
+  <div class="d-flex flex-wrap py-2 mr-3">
+    <button [class]="'btn btn-icon mr-2 my-1 btn-light'+(cor!=null && cor!=undefined?'-'+cor:'')" id="paginacao-primeiro-btn"
+      (click)="mudarPagina(obterNumerosPaginas()[0])"
+      [ngClass]="{'btn-sm': pequeno}"
+      [attr.disabled]="paginaCorrente == obterNumerosPaginas()[0] ? true : null">
+    <i class="bi bi-chevron-double-left text-primary"></i>
+    </button>
+    <button [class]="'btn btn-icon mr-2 my-1 btn-light'+(cor!=null && cor!=undefined?'-'+cor:'')" id="paginacao-anterior-btn"
+      (click)="mudarPagina(paginaCorrente-1)"  
+      [ngClass]="{'btn-sm': pequeno}"
+      [attr.disabled]="paginaCorrente == obterNumerosPaginas()[0] ? true : null">
+      <i class="bi bi-chevron-compact-left text-primary"></i>
+    </button>
+
+    <ng-container *ngFor="let pagina of obterOpcoesPaginas(); trackBy: trackByPagina">
+      <button [class]="'btn btn-icon border-0  mr-2 my-1 '+(cor!=null && cor!=undefined?'btn-hover-'+cor:'')" id="paginacao-{{ pagina }}-btn"
+        [ngClass]="{ 'btn-hover-primary active': paginaCorrente == pagina , 'btn-sm': pequeno, 'btn-light': cor==null}" (click)="mudarPagina(pagina)">
+        {{ pagina }}
+      </button>
+    </ng-container>
+
+    <button [class]="'btn btn-icon mr-2 my-1 btn-light'+(cor!=null && cor!=undefined?'-'+cor:'')" id="paginacao-proximo-btn"
+      (click)="mudarPagina(paginaCorrente + 1)"
+      [ngClass]="{'btn-sm': pequeno}"
+      [attr.disabled]="paginaCorrente == obterNumerosPaginas()[obterNumerosPaginas().length-1] ? true : null">
+      <i class="bi bi-chevron-compact-right text-primary"></i>
+    </button>
+    <button [class]="'btn btn-icon mr-2 my-1 btn-light'+(cor!=null && cor!=undefined?'-'+cor:'')" id="paginacao-ultimo-btn"
+      (click)="mudarPagina(obterNumerosPaginas().slice(-1)[0])"
+      [ngClass]="{'btn-sm': pequeno}"
+      [attr.disabled]="paginaCorrente == obterNumerosPaginas()[obterNumerosPaginas().length-1] ? true : null">
+      <i class="bi bi-chevron-double-right text-primary"></i>
+    </button>
+  </div>
+  <div class="d-flex align-items-end py-3 ml-5 justify-content-end">
+    <ng-container *ngIf="carregando">
+      <div class="d-flex align-items-center">
+        <div class="mr-2 text-muted">Carregando...</div>
+        <div [class]="'spinner mr-10 '+(cor!=null && cor!=undefined?'spinner-'+cor:'')"></div>
+      </div>
+    </ng-container>
+    <span class="text-muted"> {{ total }} registros</span>
+  </div>
+</div>
