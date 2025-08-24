@@ -1,6 +1,7 @@
 using app.Aplicacao.Usuarios.Servicos.Interfaces;
 using app.DataTransfer.Usuarios.Requests;
 using app.DataTransfer.Usuarios.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace app.Api.Controllers;
@@ -22,6 +23,7 @@ public class UsuariosController : ControllerBase
     /// <param name="request">Dados do usuário a ser inserido.</param>
     /// <returns>Dados do usuário criado.</returns>
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<UsuariosResponse>> Inserir([FromBody] UsuariosInserirRequest request)
     {
         UsuariosResponse usuario = await usuariosAppServico.Inserir(request);
@@ -34,6 +36,7 @@ public class UsuariosController : ControllerBase
     /// </summary>
     /// <returns>Dados dos usuários listados.</returns>
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IList<UsuariosResponse>>> Listar()
     {
         var usuario = await usuariosAppServico.Listar();
@@ -47,6 +50,7 @@ public class UsuariosController : ControllerBase
     /// <param name="id">Id do usuario a ser recuperado </param>
     /// <returns>Dados dos usuários listados.</returns>
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<UsuariosResponse>> Recuperar(int id)
     {
         var usuario = await usuariosAppServico.Recuperar(id);
@@ -60,6 +64,7 @@ public class UsuariosController : ControllerBase
     /// <param name="request">Edita propriedades do usuário</param>
     /// <returns>Dados do usuário atualizado.</returns>
     [HttpPut]
+    [Authorize]
     public async Task<ActionResult<UsuariosResponse>> Editar([FromBody] UsuariosEditarRequest request)
     {
         UsuariosResponse usuario = await usuariosAppServico.Editar(request);
@@ -72,6 +77,7 @@ public class UsuariosController : ControllerBase
     /// </summary>
     /// <param name="id">Id do usuario a ser excluido </param>
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Excluir(int id)
     {
         await usuariosAppServico.Excluir(id);

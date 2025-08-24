@@ -1,0 +1,31 @@
+<div class="container-fluid min-vh-100 bg-light text-dark d-flex flex-column justify-content-center align-items-center">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-lg bg-white text-dark">
+          <div class="card-body">
+            <h2 class="text-center mb-4"><i class="bi bi-box-arrow-in-right me-2"></i>Login</h2>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="username" class="form-label">Usuário</label>
+                <input type="text" id="username" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': loginForm.get('username')?.invalid && loginForm.get('username')?.touched }">
+                <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="invalid-feedback">
+                  O usuário é obrigatório.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" id="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }">
+                <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+                  A senha é obrigatória.
+                </div>
+              </div>
+              <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+              <button type="submit" class="btn btn-primary w-100">Entrar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

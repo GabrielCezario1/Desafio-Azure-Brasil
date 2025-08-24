@@ -82,7 +82,6 @@ export class UsuariosComponent implements OnInit {
 
     if (this.modoEdicao) {
       this.editarUsuarioRequest = formValue;
-      console.log(this.editarUsuarioRequest);
       this.usuariosService.editar(this.editarUsuarioRequest).subscribe({
         next: () => {
           this.toastr.success('Usuário editado com sucesso!');

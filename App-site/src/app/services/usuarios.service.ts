@@ -9,12 +9,11 @@ import { UsuariosEditarRequest } from '../shared/models/usuarios/usuarios-editar
   providedIn: 'root'
 })
 export class UsuariosService {
-  private apiUrl = 'https://localhost:5000/api/usuarios';
+  private apiUrl = 'http://localhost:5001/api/usuarios';
 
   constructor(private http: HttpClient) { }
 
   inserir(request: UsuariosInserirRequest): Observable<UsuariosResponse> {
-    console.log('Inserindo usuário:', request);
     return this.http.post<UsuariosResponse>(this.apiUrl, request);
   }
 
@@ -27,7 +26,6 @@ export class UsuariosService {
   }
 
   editar(request: UsuariosEditarRequest): Observable<UsuariosResponse> {
-    console.log('Editando usuário:', request);
     return this.http.put<UsuariosResponse>(this.apiUrl, request);
   }
 
