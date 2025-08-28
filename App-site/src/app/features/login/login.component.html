@@ -1,30 +1,119 @@
-<div class="container-fluid min-vh-100 bg-light text-dark d-flex flex-column justify-content-center align-items-center">
+<div class="container-fluid min-vh-100 bg-primary d-flex flex-column justify-content-center align-items-center">
   <div class="container py-5">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow-lg bg-white text-dark">
-          <div class="card-body">
-            <h2 class="text-center mb-4"><i class="bi bi-box-arrow-in-right me-2"></i>Login</h2>
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-3">
+          <div class="card-body p-5">
+
+            <div class="text-center mb-4">
               <div class="mb-3">
-                <label for="username" class="form-label">Usuário</label>
-                <input type="text" id="username" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': loginForm.get('username')?.invalid && loginForm.get('username')?.touched }">
-                <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="invalid-feedback">
-                  O usuário é obrigatório.
+                <i class="bi bi-building display-4 text-primary"></i>
+              </div>
+              <h2 class="fw-bold text-dark mb-2">Acesso Corporativo</h2>
+              <p class="text-muted mb-0">Entre com sua conta Microsoft</p>
+            </div>
+
+            <div *ngIf="isAuthenticated && !isLoading" class="text-center">
+              <div class="alert alert-success border-0 border-start border-success border-4 mb-4">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                Você já está conectado!
+              </div>
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Redirecionando...</span>
+              </div>
+              <p class="text-muted mt-2">Redirecionando...</p>
+            </div>
+
+            <div *ngIf="!isAuthenticated && !isLoading">
+              <button type="button" class="btn btn-primary w-100 py-3 mb-3 fw-semibold fs-5"
+                (click)="loginWithMicrosoft()">
+                <i class="bi bi-microsoft me-2"></i>
+                Entrar com Microsoft
+              </button>
+
+              <div class="p-3 bg-light border border-primary border-opacity-25 rounded">
+                <small class="text-muted d-block text-center mb-2">
+                  <i class="bi bi-shield-check me-1 text-success"></i>
+                  Login seguro com autenticação corporativa
+                </small>
+                <small class="text-muted d-block text-center">
+                  Seus dados são protegidos pelo Microsoft Entra ID
+                </small>
+              </div>
+            </div>
+
+            <div *ngIf="isLoading" class="text-center">
+              <div class="py-4 mb-4">
+                <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                  <span class="visually-hidden">Autenticando...</span>
+                </div>
+                <h5 class="fw-bold text-dark mb-2">Autenticando...</h5>
+                <p class="text-muted mb-0">Aguarde enquanto validamos suas credenciais</p>
+              </div>
+
+              <div class="progress mb-3" style="height: 4px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+                  style="width: 100%"></div>
+              </div>
+
+              <small class="text-muted">
+                <i class="bi bi-info-circle me-1"></i>
+                Uma janela popup pode ter sido aberta para login
+              </small>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger border-0 border-start border-danger border-4 mb-4">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>
+                  <strong>Erro na Autenticação</strong><br>
+                  <small>{{ errorMessage }}</small>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Senha</label>
-                <input type="password" id="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }">
-                <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
-                  A senha é obrigatória.
+
+              <div class="mt-3" *ngIf="!isLoading">
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="loginWithMicrosoft()">
+                  <i class="bi bi-arrow-clockwise me-1"></i>
+                  Tentar Novamente
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top border-opacity-25">
+              <div class="row text-center">
+                <div class="col-4">
+                  <small class="text-muted">
+                    <i class="bi bi-shield-lock text-success d-block mb-1" style="font-size: 1.25rem;"></i>
+                    Seguro
+                  </small>
+                </div>
+                <div class="col-4">
+                  <small class="text-muted">
+                    <i class="bi bi-lightning text-warning d-block mb-1" style="font-size: 1.25rem;"></i>
+                    Rápido
+                  </small>
+                </div>
+                <div class="col-4">
+                  <small class="text-muted">
+                    <i class="bi bi-check-circle text-primary d-block mb-1" style="font-size: 1.25rem;"></i>
+                    Confiável
+                  </small>
                 </div>
               </div>
-              <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-              <button type="submit" class="btn btn-primary w-100">Entrar</button>
-            </form>
+            </div>
+
           </div>
         </div>
+
+        <div class="text-center mt-4">
+          <small class="text-white opacity-75">
+            Problemas para acessar?
+            <a href="#" class="text-white text-decoration-underline">
+              Contate o Suporte TI
+            </a>
+          </small>
+        </div>
+
       </div>
     </div>
   </div>

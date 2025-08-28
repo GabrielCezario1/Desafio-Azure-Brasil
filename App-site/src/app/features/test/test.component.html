@@ -1,0 +1,278 @@
+<div class="container-fluid py-4 bg-light min-vh-100">
+  <div class="row">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body text-center border-start border-primary border-4">
+          <h2 class="display-6 fw-bold text-primary mb-2">
+            <i class="bi bi-gear-fill me-2"></i>
+            Dashboard de Testes MSAL
+          </h2>
+          <p class="text-muted mb-0">
+            Ferramenta de validação da integração Microsoft Entra ID
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="bi bi-shield-lock me-2"></i>
+            Status de Autenticação
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-sm-4 fw-bold">
+              Estado:
+            </div>
+            <div class="col-sm-8">
+              <span [class]="isAuthenticated ? 'badge bg-success' : 'badge bg-danger'">
+                <i [class]="isAuthenticated ? 'bi bi-check-circle' : 'bi bi-x-circle'" class="me-1"></i>
+                {{ isAuthenticated ? 'Autenticado' : 'Não Autenticado' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 fw-bold">
+              MSAL:
+            </div>
+            <div class="col-sm-8">
+              <span class="badge bg-info">{{ msalStatus }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="isAuthenticated && userInfo" class="mt-4">
+            <h6 class="text-primary">
+              <i class="bi bi-person-fill me-2"></i>
+              Informações do Usuário
+            </h6>
+            <div class="user-info p-3 bg-light rounded border-start border-success border-3">
+              <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Nome:</div>
+                <div class="col-sm-8">{{ userInfo.name || 'N/A' }}</div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Email:</div>
+                <div class="col-sm-8">{{ userInfo.username || 'N/A' }}</div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Tenant:</div>
+                <div class="col-sm-8">
+                  <small class="font-monospace text-muted">{{ userInfo.tenantId || 'N/A' }}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4 fw-bold">Account ID:</div>
+                <div class="col-sm-8">
+                  <small class="font-monospace text-muted">{{ userInfo.localAccountId || 'N/A' }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 d-grid gap-2">
+            <button 
+              *ngIf="!isAuthenticated" 
+              class="btn btn-primary"
+              (click)="doLogin()"
+              [disabled]="isLoading">
+              <i class="bi bi-box-arrow-in-right me-2"></i>
+              Fazer Login
+            </button>
+            
+            <button 
+              *ngIf="isAuthenticated" 
+              class="btn btn-outline-danger"
+              (click)="doLogout()"
+              [disabled]="isLoading">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Fazer Logout
+            </button>
+            
+            <button 
+              class="btn btn-outline-primary"
+              (click)="refreshInfo()"
+              [disabled]="isLoading">
+              <i class="bi bi-arrow-clockwise me-2"></i>
+              Atualizar Informações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">
+            <i class="bi bi-key me-2"></i>
+            Informações do Token
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="tokenInfo.hasToken" class="token-info">
+            <div class="row mb-3">
+              <div class="col-sm-4 fw-bold">
+                Preview:
+              </div>
+              <div class="col-sm-8">
+                <code class="d-block p-2 bg-light border rounded text-break small text-muted">
+                  {{ tokenInfo.tokenPreview }}
+                </code>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-sm-4 fw-bold">
+                Expira em:
+              </div>
+              <div class="col-sm-8">
+                <small class="text-muted">{{ tokenInfo.expiresOn | date:'medium' }}</small>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-sm-4 fw-bold">
+                Scopes:
+              </div>
+              <div class="col-sm-8">
+                <span 
+                  *ngFor="let scope of tokenInfo.scopes" 
+                  class="badge bg-secondary me-1 mb-1">
+                  {{ scope }}
+                </span>
+                <span *ngIf="tokenInfo.scopes.length === 0" class="text-muted">
+                  Nenhum scope disponível
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="!tokenInfo.hasToken" class="text-center text-muted">
+            <i class="bi bi-key display-4 mb-3"></i>
+            <p>Nenhum token disponível</p>
+            <small>Faça login para ver informações do token</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-warning text-dark">
+          <h5 class="mb-0">
+            <i class="bi bi-activity me-2"></i>
+            Testes de API
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3 mb-4">
+            <div class="col-md-3">
+              <button 
+                class="btn btn-outline-success w-100"
+                (click)="testPublicEndpoint()"
+                [disabled]="isLoading">
+                <i class="bi bi-globe me-2"></i>
+                Endpoint Público
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button 
+                class="btn btn-outline-primary w-100"
+                (click)="testProtectedEndpoint()"
+                [disabled]="isLoading || !isAuthenticated">
+                <i class="bi bi-shield-lock me-2"></i>
+                Endpoint Protegido
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button 
+                class="btn btn-outline-info w-100"
+                (click)="testCustomEndpoint()"
+                [disabled]="isLoading || !isAuthenticated">
+                <i class="bi bi-gear me-2"></i>
+                Endpoint Customizado
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button 
+                class="btn btn-outline-secondary w-100"
+                (click)="clearHistory()">
+                <i class="bi bi-trash me-2"></i>
+                Limpar Histórico
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="isLoading" class="text-center mb-3">
+            <div class="spinner-border text-primary me-2" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+            <span>Executando teste: <strong>{{ lastApiCall }}</strong></span>
+          </div>
+
+          <div *ngIf="lastApiCall && !isLoading" class="mb-4">
+            <h6 class="text-primary">Último Teste: {{ lastApiCall }}</h6>
+            
+            <div *ngIf="lastApiResult" class="alert alert-success border-0 border-start border-success border-4">
+              <i class="bi bi-check-circle me-2"></i>
+              <strong>Sucesso:</strong> {{ lastApiResult }}
+            </div>
+            
+            <div *ngIf="lastApiError" class="alert alert-danger border-0 border-start border-danger border-4">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              <strong>Erro:</strong> {{ lastApiError }}
+            </div>
+          </div>
+
+          <div *ngIf="apiTestHistory.length > 0">
+            <h6 class="text-primary">
+              <i class="bi bi-clock-history me-2"></i>
+              Histórico de Testes
+            </h6>
+            <div class="table-responsive">
+              <table class="table table-sm table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th class="fw-bold">Hora</th>
+                    <th class="fw-bold">Método</th>
+                    <th class="fw-bold">Endpoint</th>
+                    <th class="fw-bold">Status</th>
+                    <th class="fw-bold">Resultado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of apiTestHistory" 
+                      [class]="item.status === 'success' ? 'table-success' : 'table-danger'">
+                    <td><small class="text-muted">{{ item.timestamp }}</small></td>
+                    <td>
+                      <span class="badge bg-secondary">{{ item.method }}</span>
+                    </td>
+                    <td><code class="small">{{ item.url }}</code></td>
+                    <td>
+                      <i [class]="item.status === 'success' ? 'bi bi-check-circle text-success' : 'bi bi-x-circle text-danger'"></i>
+                    </td>
+                    <td><small>{{ item.result }}</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div *ngIf="apiTestHistory.length === 0 && !lastApiCall" class="text-center text-muted">
+            <i class="bi bi-activity display-4 mb-3"></i>
+            <p>Nenhum teste executado ainda</p>
+            <small>Use os botões acima para testar a integração da API</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

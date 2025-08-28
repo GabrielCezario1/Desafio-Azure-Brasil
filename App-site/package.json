@@ -18,6 +18,8 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
+    "@azure/msal-angular": "^3.0.16",
+    "@azure/msal-browser": "^3.13.0",
     "bootstrap-icons": "^1.13.1",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",

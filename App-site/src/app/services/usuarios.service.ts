@@ -28,7 +28,7 @@ export class UsuariosService {
   editar(request: UsuariosEditarRequest): Observable<UsuariosResponse> {
     return this.http.put<UsuariosResponse>(this.apiUrl, request);
   }
-
+  
   excluir(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
