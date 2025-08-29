@@ -1,11 +1,43 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using app.Ioc;
 using Microsoft.OpenApi.Models;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine($"❌ JWT Authentication Failed: {context.Exception?.Message}");
+            Console.WriteLine($"❌ JWT Exception Details: {context.Exception}");
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Console.WriteLine("✅ JWT Token Validated Successfully");
+            Console.WriteLine($"✅ User: {context.Principal?.Identity?.Name}");
+            Console.WriteLine($"✅ Claims Count: {context.Principal?.Claims?.Count()}");
+            return Task.CompletedTask;
+        },
+        OnMessageReceived = context =>
+        {
+            Console.WriteLine($"🔍 JWT Message Received: Token present = {!string.IsNullOrEmpty(context.Request.Headers["Authorization"])}");
+            return Task.CompletedTask;
+        }
+    };
+});
+
+var azureAdConfig = builder.Configuration.GetSection("AzureAd");
 builder.Services.AddInfraestrutura(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -30,6 +62,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -38,26 +71,6 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
-});
-
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    };
 });
 
 var app = builder.Build();
@@ -70,9 +83,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();  
+app.UseAuthentication();    
+app.UseAuthorization();     
 app.MapControllers();
 
 app.Run();

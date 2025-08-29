@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -9,14 +9,13 @@ import { BrowserCacheLocation, InteractionType, LogLevel, PublicClientApplicatio
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
-import { authInterceptorFn } from './core/interceptors/auth.interceptor';
 import { provideToastr } from 'ngx-toastr';
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     authRequest: {
-      scopes: ['user.read'],
+      scopes: ['user.read', environment.msalConfig.apiScopes.api],
     },
     loginFailedRoute: '/home',
   };
@@ -49,6 +48,9 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   
   protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
   protectedResourceMap.set('https://graph.microsoft.com/v1.0/me/photo/$value', ['user.read']);
+  protectedResourceMap.set('http://localhost:5001/api/', [environment.msalConfig.apiScopes.api]);
+  protectedResourceMap.set('http://localhost:5001/api', [environment.msalConfig.apiScopes.api]);
+  protectedResourceMap.set('localhost:5001/api', [environment.msalConfig.apiScopes.api]);
 
   return {
     interactionType: InteractionType.Redirect,
@@ -59,7 +61,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptorFn])),
+    provideHttpClient(withInterceptorsFromDi()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimations(),
     provideToastr(),

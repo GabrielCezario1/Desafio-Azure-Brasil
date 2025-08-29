@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 
 namespace app.Api.Controllers
 {
@@ -12,29 +8,11 @@ namespace app.Api.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-
-        public AuthController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
+        public AuthController() {}
         public class LoginRequest
         {
             public string Username { get; set; } = string.Empty;
             public string Password { get; set; } = string.Empty;
-        }
-
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
-        {
-            // Validação simples: substitua por consulta ao banco de dados
-            if (request.Username == "admin" && request.Password == "senha123")
-            {
-                var token = GerarToken(request.Username);
-                return Ok(new { token });
-            }
-            return Unauthorized();
         }
 
         /// <summary>
@@ -55,6 +33,42 @@ namespace app.Api.Controllers
         }
 
         /// <summary>
+        /// Endpoint de diagnóstico para verificar o que está chegando na API
+        /// NÃO requer autenticação para diagnóstico
+        /// </summary>
+        [HttpGet("debug/headers")]
+        [AllowAnonymous]
+        public IActionResult DebugHeaders()
+        {
+            try
+            {
+                var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+                var allHeaders = HttpContext.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString());
+                
+                var userClaims = HttpContext.User?.Claims?.Select(c => new { c.Type, c.Value }).ToList();
+                
+                return Ok(new
+                {
+                    hasAuthorizationHeader = !string.IsNullOrEmpty(authHeader),
+                    authorizationHeader = authHeader?.Substring(0, Math.Min(50, authHeader?.Length ?? 0)) + "...",
+                    allHeaders = allHeaders,
+                    userIsAuthenticated = HttpContext.User?.Identity?.IsAuthenticated ?? false,
+                    userClaims = userClaims,
+                    timestamp = DateTime.UtcNow
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new 
+                { 
+                    message = "Erro no diagnóstico", 
+                    error = ex.Message,
+                    timestamp = DateTime.UtcNow 
+                });
+            }
+        }
+
+        /// <summary>
         /// Endpoint para obter informações do usuário autenticado
         /// Requer autenticação (token JWT ou Azure AD)
         /// </summary>
@@ -64,7 +78,6 @@ namespace app.Api.Controllers
         {
             try
             {
-                // Obter informações do usuário autenticado dos claims
                 var identity = HttpContext.User.Identity as ClaimsIdentity;
                 
                 if (identity == null || !identity.IsAuthenticated)
@@ -72,7 +85,6 @@ namespace app.Api.Controllers
                     return Unauthorized(new { message = "Usuário não autenticado" });
                 }
 
-                // Extrair claims relevantes
                 var claims = identity.Claims.ToDictionary(c => c.Type, c => c.Value);
                 
                 var userInfo = new
@@ -80,7 +92,6 @@ namespace app.Api.Controllers
                     isAuthenticated = true,
                     username = identity.Name,
                     authType = identity.AuthenticationType,
-                    claims = claims,
                     roles = identity.Claims
                         .Where(c => c.Type == ClaimTypes.Role)
                         .Select(c => c.Value)
@@ -107,25 +118,52 @@ namespace app.Api.Controllers
             }
         }
 
-        private string GerarToken(string username)
+        /// <summary>
+        /// Endpoint de diagnóstico avançado que tenta autorização e captura erros
+        /// </summary>
+        [HttpGet("debug/auth-test")]
+        public IActionResult DebugAuthTest()
         {
-            var claims = new[]
+            try
             {
-                new Claim(ClaimTypes.Name, username)
-            };
+                var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+                var allHeaders = HttpContext.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString());
+                
+                var userIdentity = HttpContext.User?.Identity;
+                var userClaims = HttpContext.User?.Claims?.Select(c => new { c.Type, c.Value }).ToList();
+                
+                var response = new
+                {
+                    hasAuthorizationHeader = !string.IsNullOrEmpty(authHeader),
+                    authorizationHeader = authHeader?.Substring(0, Math.Min(50, authHeader?.Length ?? 0)) + "...",
+                    userIsAuthenticated = userIdentity?.IsAuthenticated ?? false,
+                    userAuthenticationType = userIdentity?.AuthenticationType,
+                    userName = userIdentity?.Name,
+                    userClaims = userClaims,
+                    claimsCount = userClaims?.Count ?? 0,
+                    timestamp = DateTime.UtcNow,
+                    
+                    tokenDiagnostics = new
+                    {
+                        audience = userClaims?.FirstOrDefault(c => c.Type == "aud")?.Value,
+                        issuer = userClaims?.FirstOrDefault(c => c.Type == "iss")?.Value,
+                        scope = userClaims?.FirstOrDefault(c => c.Type == "scp")?.Value,
+                        clientId = userClaims?.FirstOrDefault(c => c.Type == "azp")?.Value,
+                        hasRequiredScope = userClaims?.Any(c => c.Type == "scp" && c.Value.Contains("access_as_user")) ?? false
+                    }
+                };
 
-            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key não configurado");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new 
+                { 
+                    message = "Erro no diagnóstico avançado", 
+                    error = ex.Message,
+                    timestamp = DateTime.UtcNow 
+                });
+            }
         }
     }
 }

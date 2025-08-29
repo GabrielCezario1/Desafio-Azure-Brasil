@@ -44,8 +44,7 @@ private destroy$ = new Subject<void>();
     this.isLoading = true;
 
     this.authService.login().subscribe({
-      next: (response) => {
-        console.log('LoginComponent: Login bem-sucedido', response);
+      next: () => {
         this.isLoading = false;
       },
       error: (error) => {
@@ -94,7 +93,6 @@ private destroy$ = new Subject<void>();
   }
 
   ngOnDestroy(): void {
-    console.log('🧹 LoginComponent: Limpando recursos...');
     this.destroy$.next();
     this.destroy$.complete();
   }

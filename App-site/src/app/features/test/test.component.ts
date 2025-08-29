@@ -213,10 +213,69 @@ export class TestComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     }
   }
+  async testDebugEndpoint(): Promise<void> {
+    this.isLoading = true;
+    this.lastApiCall = 'GET /api/auth/debug/headers';
 
+    try {
+      const response = await this.http.get('http://localhost:5001/api/auth/debug/headers').toPromise();
+
+      this.lastApiResult = JSON.stringify(response, null, 2);
+      this.lastApiError = '';
+      this.addToHistory('GET', '/api/auth/debug/headers', 'success', 'Debug executado - verifique resultado');
+
+    } catch (error: any) {
+      this.lastApiError = error.message || 'Erro no endpoint de debug';
+      this.lastApiResult = '';
+      this.addToHistory('GET', '/api/auth/debug/headers', 'error', this.lastApiError);
+      console.error('❌ TestComponent: Erro no debug:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async testRealProtectedEndpoint(): Promise<void> {
+    this.isLoading = true;
+    this.lastApiCall = 'GET /api/auth/me';
+
+    try {
+      const response = await this.http.get('http://localhost:5001/api/auth/me').toPromise();
+
+      this.lastApiResult = JSON.stringify(response, null, 2);
+      this.lastApiError = '';
+      this.addToHistory('GET', '/api/auth/me', 'success', 'Endpoint protegido funcionando!');
+    } catch (error: any) {
+      this.lastApiError = error.message || 'Erro no endpoint protegido';
+      this.lastApiResult = '';
+      this.addToHistory('GET', '/api/auth/me', 'error', this.lastApiError);
+      console.error('❌ TestComponent: Erro no endpoint protegido:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  
+  async testAdvancedDiagnostic(): Promise<void> {
+    this.isLoading = true;
+    this.lastApiCall = 'GET /api/auth/debug/auth-test';
+
+    try {
+      const response = await this.http.get('http://localhost:5001/api/auth/debug/auth-test').toPromise();
+
+      this.lastApiResult = JSON.stringify(response, null, 2);
+      this.lastApiError = '';
+      this.addToHistory('GET', '/api/auth/debug/auth-test', 'success', 'Diagnóstico avançado executado');
+    } catch (error: any) {
+      this.lastApiError = error.message || 'Erro no diagnóstico avançado';
+      this.lastApiResult = '';
+      this.addToHistory('GET', '/api/auth/debug/auth-test', 'error', this.lastApiError);
+      console.error('❌ TestComponent: Erro no diagnóstico avançado:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
 
   async testCustomEndpoint(): Promise<void> {
-    console.log('🧪 TestComponent: Testando endpoint customizado...');
     this.isLoading = true;
     this.lastApiCall = 'GET /api/auth/me';
 

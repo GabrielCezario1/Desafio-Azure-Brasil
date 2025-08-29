@@ -174,7 +174,7 @@
         </div>
         <div class="card-body">
           <div class="row g-3 mb-4">
-            <div class="col-md-3">
+            <div class="col-md-2">
               <button 
                 class="btn btn-outline-success w-100"
                 (click)="testPublicEndpoint()"
@@ -183,7 +183,7 @@
                 Endpoint Público
               </button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <button 
                 class="btn btn-outline-primary w-100"
                 (click)="testProtectedEndpoint()"
@@ -192,7 +192,7 @@
                 Endpoint Protegido
               </button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <button 
                 class="btn btn-outline-info w-100"
                 (click)="testCustomEndpoint()"
@@ -201,12 +201,49 @@
                 Endpoint Customizado
               </button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+              <button 
+                class="btn btn-outline-warning w-100"
+                (click)="testDebugEndpoint()"
+                [disabled]="isLoading">
+                <i class="bi bi-bug me-2"></i>
+                Debug Headers
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button 
+                class="btn btn-outline-info w-100"
+                (click)="testRealProtectedEndpoint()"
+                [disabled]="isLoading">
+                <i class="bi bi-shield-lock me-2"></i>
+                Auth /me
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button 
+                class="btn btn-outline-danger w-100"
+                (click)="testAdvancedDiagnostic()"
+                [disabled]="isLoading">
+                <i class="bi bi-wrench me-2"></i>
+                Auth Test
+              </button>
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col-md-2">
               <button 
                 class="btn btn-outline-secondary w-100"
                 (click)="clearHistory()">
                 <i class="bi bi-trash me-2"></i>
                 Limpar Histórico
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button 
+                class="btn btn-outline-dark w-100"
+                (click)="refreshInfo()">
+                <i class="bi bi-arrow-clockwise me-2"></i>
+                Atualizar
               </button>
             </div>
           </div>
