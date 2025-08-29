@@ -1,0 +1,16 @@
+/* 
+ * Component usando apenas classes Bootstrap 5
+ * Arquivo SCSS mantido para possíveis customizações futuras mínimas
+ */
+
+// Media queries para ajustes responsivos específicos se necessário
+@media (max-width: 576px) {
+  .table-responsive .table {
+    font-size: 0.875rem;
+  }
+  
+  .nav-tabs .nav-link {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+}

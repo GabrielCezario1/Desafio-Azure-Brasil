@@ -10,7 +10,16 @@ export const environment = {
       postLogoutRedirectUri: 'http://localhost:4200'
     },
     apiScopes: {
-      api: 'api://c3e1d930-5025-4441-b5ea-3dc880eec76a/access_as_user'
+      api: 'api://c3e1d930-5025-4441-b5ea-3dc880eec76a/access_as_user',
+      graph: {
+        user: 'User.Read',
+        userAll: 'User.Read.All',
+        directory: 'Directory.Read.All',
+        group: 'Group.Read.All',
+        profile: 'profile',
+        email: 'email',
+        openid: 'openid'
+      }
     }
   }
 };

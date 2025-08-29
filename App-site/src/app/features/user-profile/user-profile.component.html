@@ -1,0 +1,440 @@
+<div class="container-fluid bg-light min-vh-100 py-4">
+  <div class="container">
+    <!-- Quick Navigation -->
+    <nav class="bg-white p-3 rounded shadow-sm mb-4 border-start border-primary border-4">
+      <div class="d-flex flex-wrap gap-2">
+        <a routerLink="/home" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-house me-1"></i>
+          Home
+        </a>
+        <a routerLink="/usuarios" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-people me-1"></i>
+          Usuários
+        </a>
+        <a routerLink="/test" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-gear me-1"></i>
+          Testes
+        </a>
+        <span class="btn btn-primary btn-sm">
+          <i class="bi bi-person-vcard me-1"></i>
+          Perfil
+        </span>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0 text-dark fw-semibold">
+        <i class="bi bi-person-circle me-2 text-primary"></i>
+        Perfil do Usuário
+      </h2>
+      <button 
+        class="btn btn-outline-primary" 
+        (click)="refreshProfile()"
+        [disabled]="isLoading">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        {{ isLoading ? 'Carregando...' : 'Atualizar' }}
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-3 text-muted">Carregando informações do perfil...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !isLoading" class="alert alert-danger rounded shadow-sm">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {{ error }}
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="userProfile && !isLoading" class="bg-white rounded shadow">
+      
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-tabs border-0 p-3 pb-0" role="tablist">
+        <li class="nav-item me-1" role="presentation">
+          <button 
+            class="nav-link rounded-top border-0 px-3 py-2 fw-semibold" 
+            [class.active]="activeTab === 'overview'"
+            [class.bg-primary]="activeTab === 'overview'"
+            [class.text-white]="activeTab === 'overview'"
+            [class.text-muted]="activeTab !== 'overview'"
+            (click)="changeTab('overview')"
+            type="button">
+            <i class="bi bi-person-fill me-1"></i>
+            Visão Geral
+          </button>
+        </li>
+        <li class="nav-item me-1" role="presentation">
+          <button 
+            class="nav-link rounded-top border-0 px-3 py-2 fw-semibold" 
+            [class.active]="activeTab === 'tenant'"
+            [class.bg-primary]="activeTab === 'tenant'"
+            [class.text-white]="activeTab === 'tenant'"
+            [class.text-muted]="activeTab !== 'tenant'"
+            (click)="changeTab('tenant')"
+            type="button">
+            <i class="bi bi-building me-1"></i>
+            Tenant
+          </button>
+        </li>
+        <li class="nav-item me-1" role="presentation">
+          <button 
+            class="nav-link rounded-top border-0 px-3 py-2 fw-semibold" 
+            [class.active]="activeTab === 'groups'"
+            [class.bg-primary]="activeTab === 'groups'"
+            [class.text-white]="activeTab === 'groups'"
+            [class.text-muted]="activeTab !== 'groups'"
+            (click)="changeTab('groups')"
+            type="button">
+            <i class="bi bi-people me-1"></i>
+            Meus Grupos
+            <span class="badge bg-light text-dark ms-1">{{ userProfile.groups.length || 0 }}</span>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button 
+            class="nav-link rounded-top border-0 px-3 py-2 fw-semibold" 
+            [class.active]="activeTab === 'users'"
+            [class.bg-primary]="activeTab === 'users'"
+            [class.text-white]="activeTab === 'users'"
+            [class.text-muted]="activeTab !== 'users'"
+            (click)="changeTab('users')"
+            type="button">
+            <i class="bi bi-people-fill me-1"></i>
+            Usuários do Tenant
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content p-4">
+        
+        <!-- Overview Tab -->
+        <div *ngIf="activeTab === 'overview'" class="tab-pane fade show active">
+          <div class="row">
+            <!-- User Basic Info -->
+            <div class="col-lg-6 mb-4">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-primary text-white border-0">
+                  <h5 class="card-title mb-0 fw-semibold">
+                    <i class="bi bi-person-vcard me-2"></i>
+                    Informações Pessoais
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="text-center mb-4">
+                    <i class="bi bi-person-circle display-1 text-primary"></i>
+                    <h4 class="mt-2 fw-semibold text-dark">{{ userProfile.user.displayName }}</h4>
+                    <p class="text-muted fst-italic">{{ userProfile.user.jobTitle || 'Sem cargo definido' }}</p>
+                  </div>
+                  
+                  <div class="border-top pt-3">
+                    <div class="row mb-3">
+                      <div class="col-4 fw-semibold text-dark">ID:</div>
+                      <div class="col-8">
+                        <code class="bg-light text-danger p-1 rounded">{{ userProfile.user.id }}</code>
+                        <button class="btn btn-sm btn-outline-secondary ms-2" (click)="copyToClipboard(userProfile.user.id)">
+                          <i class="bi bi-clipboard"></i>
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                      <div class="col-4 fw-semibold text-dark">Email:</div>
+                      <div class="col-8 text-break">{{ userProfile.user.userPrincipalName }}</div>
+                    </div>
+                    
+                    <div class="row mb-3" *ngIf="userProfile.user.mail">
+                      <div class="col-4 fw-semibold text-dark">Email Alt:</div>
+                      <div class="col-8 text-break">{{ userProfile.user.mail }}</div>
+                    </div>
+                    
+                    <div class="row mb-3" *ngIf="userProfile.user.department">
+                      <div class="col-4 fw-semibold text-dark">Departamento:</div>
+                      <div class="col-8">{{ userProfile.user.department }}</div>
+                    </div>
+                    
+                    <div class="row mb-3" *ngIf="userProfile.user.officeLocation">
+                      <div class="col-4 fw-semibold text-dark">Localização:</div>
+                      <div class="col-8">{{ userProfile.user.officeLocation }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                      <div class="col-4 fw-semibold text-dark">Status:</div>
+                      <div class="col-8">
+                        <span class="badge" [class]="'bg-' + getUserStatusBadge(userProfile.user)">
+                          {{ getUserStatusText(userProfile.user) }}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-4 fw-semibold text-dark">Criado em:</div>
+                      <div class="col-8">{{ formatDate(userProfile.user.createdDateTime) }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Info & Activity -->
+            <div class="col-lg-6 mb-4">
+              <!-- Contact Information -->
+              <div class="card border-0 shadow-sm mb-3">
+                <div class="card-header bg-info text-white border-0">
+                  <h5 class="card-title mb-0 fw-semibold">
+                    <i class="bi bi-telephone me-2"></i>
+                    Contato
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="row mb-3" *ngIf="userProfile.user.businessPhones?.length">
+                    <div class="col-5 fw-semibold text-dark">Tel. Comercial:</div>
+                    <div class="col-7">{{ userProfile.user.businessPhones[0] }}</div>
+                  </div>
+                  
+                  <div class="row mb-3" *ngIf="userProfile.user.mobilePhone">
+                    <div class="col-5 fw-semibold text-dark">Celular:</div>
+                    <div class="col-7">{{ userProfile.user.mobilePhone }}</div>
+                  </div>
+                  
+                  <div class="row" *ngIf="userProfile.user.preferredLanguage">
+                    <div class="col-5 fw-semibold text-dark">Idioma:</div>
+                    <div class="col-7">{{ userProfile.user.preferredLanguage }}</div>
+                  </div>
+
+                  <div *ngIf="!userProfile.user.businessPhones?.length && !userProfile.user.mobilePhone && !userProfile.user.preferredLanguage" 
+                       class="text-center text-muted py-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações de contato não disponíveis
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sign-in Activity -->
+              <div class="card border-0 shadow-sm" *ngIf="userProfile.signInActivity">
+                <div class="card-header bg-success text-white border-0">
+                  <h5 class="card-title mb-0 fw-semibold">
+                    <i class="bi bi-clock-history me-2"></i>
+                    Atividade de Login
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="row mb-3" *ngIf="userProfile.signInActivity.lastSignInDateTime">
+                    <div class="col-5 fw-semibold text-dark">Último Login:</div>
+                    <div class="col-7">{{ formatDate(userProfile.signInActivity.lastSignInDateTime) }}</div>
+                  </div>
+                  
+                  <div class="row mb-3" *ngIf="userProfile.signInActivity.lastSuccessfulSignInDateTime">
+                    <div class="col-5 fw-semibold text-dark">Último Sucesso:</div>
+                    <div class="col-7">{{ formatDate(userProfile.signInActivity.lastSuccessfulSignInDateTime) }}</div>
+                  </div>
+                  
+                  <div class="row" *ngIf="userProfile.signInActivity.lastNonInteractiveSignInDateTime">
+                    <div class="col-5 fw-semibold text-dark">Último N.I.:</div>
+                    <div class="col-7">{{ formatDate(userProfile.signInActivity.lastNonInteractiveSignInDateTime) }}</div>
+                  </div>
+
+                  <div *ngIf="!userProfile.signInActivity.lastSignInDateTime && !userProfile.signInActivity.lastSuccessfulSignInDateTime" 
+                       class="text-center text-muted py-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Dados de atividade não disponíveis
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tenant Tab -->
+        <div *ngIf="activeTab === 'tenant'" class="tab-pane fade show active">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-warning text-dark border-0">
+              <h5 class="card-title mb-0 fw-semibold">
+                <i class="bi bi-building me-2"></i>
+                Informações do Tenant
+              </h5>
+            </div>
+            <div class="card-body">
+              <div *ngIf="userProfile.tenantInfo" class="tenant-info">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <div class="fw-semibold text-dark mb-2">ID do Tenant:</div>
+                      <div class="d-flex align-items-center">
+                        <code class="bg-light text-danger p-2 rounded flex-grow-1 me-2">{{ userProfile.tenantInfo.id }}</code>
+                        <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard(userProfile.tenantInfo.id)">
+                          <i class="bi bi-clipboard"></i>
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                      <div class="fw-semibold text-dark mb-2">Nome do Tenant:</div>
+                      <div class="fs-5">{{ userProfile.tenantInfo.displayName }}</div>
+                    </div>
+                    
+                    <div class="mb-4" *ngIf="userProfile.tenantInfo.tenantType">
+                      <div class="fw-semibold text-dark mb-2">Tipo:</div>
+                      <div>{{ userProfile.tenantInfo.tenantType }}</div>
+                    </div>
+                    
+                    <div class="mb-4" *ngIf="userProfile.tenantInfo.countryLetterCode">
+                      <div class="fw-semibold text-dark mb-2">País:</div>
+                      <div>{{ userProfile.tenantInfo.countryLetterCode }}</div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="mb-4">
+                      <div class="fw-semibold text-dark mb-2">Criado em:</div>
+                      <div>{{ formatDate(userProfile.tenantInfo.createdDateTime) }}</div>
+                    </div>
+                    
+                    <div class="mb-4" *ngIf="userProfile.tenantInfo.verifiedDomains?.length">
+                      <div class="fw-semibold text-dark mb-2">Domínios Verificados:</div>
+                      <div>
+                        <div *ngFor="let domain of userProfile.tenantInfo.verifiedDomains" class="mb-2">
+                          <span class="badge me-2 fs-6" 
+                                [class]="domain.isDefault ? 'bg-primary' : 'bg-secondary'">
+                            {{ domain.name }}
+                          </span>
+                          <small class="text-muted">
+                            {{ domain.isDefault ? '(Padrão)' : '' }}
+                            {{ domain.isInitial ? '(Inicial)' : '' }}
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="!userProfile.tenantInfo" class="text-center text-muted py-5">
+                <i class="bi bi-info-circle me-2 fs-4"></i>
+                <div class="mt-2">Informações do tenant não disponíveis ou acesso negado.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Groups Tab -->
+        <div *ngIf="activeTab === 'groups'" class="tab-pane fade show active">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header text-white border-0" style="background: linear-gradient(135deg, #6f42c1, #e83e8c);">
+              <h5 class="card-title mb-0 fw-semibold">
+                <i class="bi bi-people me-2"></i>
+                Meus Grupos ({{ userProfile.groups.length || 0 }})
+              </h5>
+            </div>
+            <div class="card-body">
+              <div *ngIf="userProfile.groups && userProfile.groups.length > 0" class="groups-list">
+                <div class="row">
+                  <div class="col-lg-6 mb-3" *ngFor="let group of userProfile.groups">
+                    <div class="card h-100 border shadow-sm">
+                      <div class="card-body">
+                        <h6 class="card-title fw-semibold text-dark">
+                          <i class="bi bi-collection me-2 text-primary"></i>
+                          {{ group.displayName }}
+                        </h6>
+                        <p class="card-text small text-muted mb-3" *ngIf="group.description">
+                          {{ group.description }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span class="badge bg-info">{{ getGroupTypeDisplay(group.groupTypes) }}</span>
+                          <small class="text-muted">{{ formatDateOnly(group.createdDateTime) }}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="!userProfile.groups || userProfile.groups.length === 0" class="text-center text-muted py-5">
+                <i class="bi bi-info-circle me-2 fs-4"></i>
+                <div class="mt-2">Você não pertence a nenhum grupo ou não tem permissão para visualizá-los.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div *ngIf="activeTab === 'users'" class="tab-pane fade show active">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark text-white border-0">
+              <h5 class="card-title mb-0 fw-semibold">
+                <i class="bi bi-people-fill me-2"></i>
+                Usuários do Tenant
+                <span class="badge bg-light text-dark ms-2" *ngIf="tenantUsers.length">{{ tenantUsers.length }}</span>
+              </h5>
+            </div>
+            <div class="card-body">
+              <!-- Loading tenant data -->
+              <div *ngIf="loadingTenantData" class="text-center py-4">
+                <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                Carregando usuários do tenant...
+              </div>
+              
+              <!-- Users list -->
+              <div *ngIf="tenantUsers.length > 0 && !loadingTenantData" class="users-list">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th class="fw-semibold border-0">Nome</th>
+                        <th class="fw-semibold border-0">Email</th>
+                        <th class="fw-semibold border-0">Cargo</th>
+                        <th class="fw-semibold border-0">Status</th>
+                        <th class="fw-semibold border-0">Criado em</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let user of tenantUsers" class="border-bottom">
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-person-circle me-2 text-primary fs-5"></i>
+                            <div>
+                              <div class="fw-semibold text-dark">{{ user.displayName }}</div>
+                              <small class="text-muted" *ngIf="user.givenName && user.surname">
+                                {{ user.givenName }} {{ user.surname }}
+                              </small>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <small class="text-break">{{ user.userPrincipalName }}</small>
+                        </td>
+                        <td>
+                          <small>{{ user.jobTitle || 'Não informado' }}</small>
+                        </td>
+                        <td>
+                          <span class="badge" [class]="'bg-' + getUserStatusBadge(user)">
+                            {{ getUserStatusText(user) }}
+                          </span>
+                        </td>
+                        <td>
+                          <small>{{ formatDateOnly(user.createdDateTime) }}</small>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div *ngIf="tenantUsers.length === 0 && !loadingTenantData" class="text-center text-muted py-5">
+                <i class="bi bi-info-circle me-2 fs-4"></i>
+                <div class="mt-2">Não foi possível carregar os usuários do tenant ou você não tem permissões suficientes.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

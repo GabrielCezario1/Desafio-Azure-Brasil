@@ -53,5 +53,17 @@ export const routes: Routes = [
             menuOrder: 3,
             environment: 'development',
         }
+    },
+    {
+        path: 'profile',
+        loadComponent: () => import('./features/user-profile/user-profile.component').then(m => m.UserProfileComponent),
+        canActivate: [authGuard],
+        title: 'Perfil do Usuário',
+        data: {
+            description: 'Informações do usuário e tenant Azure AD',
+            requiresAuth: true,
+            icon: 'bi-person-vcard',
+            menuOrder: 4,
+        }
     }
 ];
