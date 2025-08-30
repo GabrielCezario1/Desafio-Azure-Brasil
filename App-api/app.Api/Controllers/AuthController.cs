@@ -1,3 +1,8 @@
+// ================================================================
+// DESAFIO AZURE BRASIL - CONTROLLER DE AUTENTICAÇÃO
+// REQUISITO VAGA: Endpoints para informações do usuário autenticado
+// ================================================================
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,6 +14,10 @@ namespace app.Api.Controllers
     public class AuthController : ControllerBase
     {
         public AuthController() {}
+        
+        /// <summary>
+        /// DTO para requests de login (se necessário)
+        /// </summary>
         public class LoginRequest
         {
             public string Username { get; set; } = string.Empty;
@@ -16,9 +25,10 @@ namespace app.Api.Controllers
         }
 
         /// <summary>
-        /// Endpoint público para teste de conectividade
-        /// Não requer autenticação
+        /// Endpoint público para teste de conectividade da API
+        /// Não requer autenticação - usado para health check
         /// </summary>
+        /// <returns>Status da API</returns>
         [HttpGet("public")]
         [AllowAnonymous]
         public IActionResult PublicEndpoint()
@@ -33,9 +43,11 @@ namespace app.Api.Controllers
         }
 
         /// <summary>
-        /// Endpoint de diagnóstico para verificar o que está chegando na API
-        /// NÃO requer autenticação para diagnóstico
+        /// Endpoint de diagnóstico para verificar headers HTTP recebidos
+        /// Usado para troubleshooting de autenticação
+        /// NÃO requer autenticação para facilitar diagnóstico
         /// </summary>
+        /// <returns>Informações de headers e estado de autenticação</returns>
         [HttpGet("debug/headers")]
         [AllowAnonymous]
         public IActionResult DebugHeaders()
@@ -69,9 +81,11 @@ namespace app.Api.Controllers
         }
 
         /// <summary>
-        /// Endpoint para obter informações do usuário autenticado
-        /// Requer autenticação (token JWT ou Azure AD)
+        /// REQUISITO VAGA: Endpoint principal para obter informações do usuário autenticado
+        /// Retorna nome, claims, roles e informações do token
+        /// REQUER AUTENTICAÇÃO: Token JWT válido do Azure Entra ID
         /// </summary>
+        /// <returns>Informações completas do usuário autenticado</returns>
         [HttpGet("me")]
         [Authorize]
         public IActionResult GetUserInfo()
@@ -85,13 +99,14 @@ namespace app.Api.Controllers
                     return Unauthorized(new { message = "Usuário não autenticado" });
                 }
 
+                // Extrai todos os claims do token para análise
                 var claims = identity.Claims.ToDictionary(c => c.Type, c => c.Value);
                 
                 var userInfo = new
                 {
                     isAuthenticated = true,
-                    username = identity.Name,
-                    authType = identity.AuthenticationType,
+                    username = identity.Name,                    // REQUISITO: Nome do usuário
+                    authType = identity.AuthenticationType,     // Tipo de autenticação (JWT)
                     roles = identity.Claims
                         .Where(c => c.Type == ClaimTypes.Role)
                         .Select(c => c.Value)
@@ -99,9 +114,9 @@ namespace app.Api.Controllers
                     timestamp = DateTime.UtcNow,
                     tokenInfo = new
                     {
-                        issuer = claims.ContainsKey("iss") ? claims["iss"] : "N/A",
-                        audience = claims.ContainsKey("aud") ? claims["aud"] : "N/A",
-                        expiration = claims.ContainsKey("exp") ? claims["exp"] : "N/A"
+                        issuer = claims.ContainsKey("iss") ? claims["iss"] : "N/A",        // Emissor do token
+                        audience = claims.ContainsKey("aud") ? claims["aud"] : "N/A",      // Audiência do token
+                        expiration = claims.ContainsKey("exp") ? claims["exp"] : "N/A"     // Expiração do token
                     }
                 };
 
@@ -119,8 +134,11 @@ namespace app.Api.Controllers
         }
 
         /// <summary>
-        /// Endpoint de diagnóstico avançado que tenta autorização e captura erros
+        /// Endpoint de diagnóstico avançado para troubleshooting de autenticação
+        /// Analisa token, claims, scopes e configurações de autorização
+        /// Útil para debug durante desenvolvimento
         /// </summary>
+        /// <returns>Diagnóstico completo do estado de autenticação</returns>
         [HttpGet("debug/auth-test")]
         public IActionResult DebugAuthTest()
         {
@@ -143,6 +161,7 @@ namespace app.Api.Controllers
                     claimsCount = userClaims?.Count ?? 0,
                     timestamp = DateTime.UtcNow,
                     
+                    // Diagnóstico específico do token Azure AD
                     tokenDiagnostics = new
                     {
                         audience = userClaims?.FirstOrDefault(c => c.Type == "aud")?.Value,
