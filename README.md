@@ -21,7 +21,7 @@
 Este projeto foi desenvolvido especificamente para demonstrar competências técnicas em **desenvolvimento FullStack com integração Azure**, atendendo aos requisitos da vaga de **Desenvolvedor FullStack – Pleno .NET (Azure) / Vue.js** na **Azure Brasil Cloud**.
 
 ### 🎯 **Objetivo Principal**
-Demonstrar proficiência em tecnologias Microsoft Azure, desenvolvimento .NET moderno, e criação de SPAs com autenticação robusta e integração com serviços cloud.
+Demonstrar proficiência em desenvolvimento .NET moderno, e criação de SPAs com autenticação robusta e integração com serviços cloud.
 
 ---
 
@@ -50,7 +50,6 @@ Demonstrar proficiência em tecnologias Microsoft Azure, desenvolvimento .NET mo
 ### 🎨 **Interface e UX**
 - **SPA moderna** com Angular 19
 - **Design responsivo** com Bootstrap 5
-- **Navbar componentizada** em todas as telas
 - **Tema consistente** em todo o sistema
 - **Feedback visual** para todas as ações
 
@@ -397,7 +396,6 @@ ng generate component features/nome-do-componente --standalone
 
 ### 📄 **Arquivos de Documentação**
 
-- **[FEATURE_PROFILE.md](./FEATURE_PROFILE.md)**: Documentação detalhada da funcionalidade de perfil
 - **[App-api/README.md](./App-api/README.md)**: Documentação específica do backend
 - **[App-site/README.md](./App-site/README.md)**: Documentação específica do frontend
 
