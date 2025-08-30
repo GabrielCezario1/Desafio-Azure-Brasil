@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { Subject, takeUntil, finalize } from 'rxjs';
 import { GraphService, UserProfile, GraphUser, GraphGroup, TenantInfo } from '../../services/graph.service';
 import { AuthService } from '../../services/auth.service';
+import { AppNavbarComponent } from '../../shared/components/app-navbar';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AppNavbarComponent],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })

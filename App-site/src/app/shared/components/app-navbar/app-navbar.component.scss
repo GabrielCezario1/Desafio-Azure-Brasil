@@ -1,0 +1,39 @@
+// Estilos específicos do componente de navbar
+.btn {
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  font-weight: 500;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &.btn-primary {
+    box-shadow: 0 2px 4px rgba(13, 110, 253, 0.25);
+  }
+  
+  i {
+    font-size: 0.9rem;
+  }
+}
+
+nav {
+  border-left-width: 4px !important;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+// Responsividade
+@media (max-width: 576px) {
+  .btn {
+    font-size: 0.85rem;
+    padding: 0.375rem 0.5rem;
+    
+    i {
+      font-size: 0.8rem;
+    }
+  }
+}

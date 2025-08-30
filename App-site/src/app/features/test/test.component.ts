@@ -6,11 +6,12 @@ import { MsalService, MsalBroadcastService } from '@azure/msal-angular';
 import { AccountInfo, InteractionStatus } from '@azure/msal-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { UsuariosService } from '../../services/usuarios.service';
+import { AppNavbarComponent } from '../../shared/components/app-navbar';
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AppNavbarComponent],
   templateUrl: './test.component.html'
 })
 export class TestComponent implements OnInit, OnDestroy {

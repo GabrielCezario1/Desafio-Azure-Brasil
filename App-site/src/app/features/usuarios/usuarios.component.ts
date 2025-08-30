@@ -6,11 +6,12 @@ import { UsuariosResponse } from '../../shared/models/usuarios/usuarios-response
 import { SharedModule } from '../../shared/shared.module';
 import { ToastrService } from 'ngx-toastr';
 import { UsuariosEditarRequest } from '../../shared/models/usuarios/usuarios-editar-request.model';
+import { AppNavbarComponent } from '../../shared/components/app-navbar';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SharedModule],
+  imports: [CommonModule, ReactiveFormsModule, SharedModule, AppNavbarComponent],
   templateUrl: './usuarios.component.html'
 })
 export class UsuariosComponent implements OnInit {

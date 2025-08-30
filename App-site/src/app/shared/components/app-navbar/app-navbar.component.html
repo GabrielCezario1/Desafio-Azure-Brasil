@@ -1,0 +1,17 @@
+<nav class="bg-white p-3 rounded shadow-sm mb-4 border-start border-primary border-4">
+  <div class="d-flex flex-wrap gap-2">
+    <a 
+      *ngFor="let item of navItems" 
+      [routerLink]="item.path"
+      routerLinkActive="btn-primary"
+      [routerLinkActiveOptions]="{exact: true}"
+      class="btn btn-sm text-decoration-none"
+      [class.btn-outline-secondary]="!isActive(item.path)"
+      [class.btn-primary]="isActive(item.path)"
+      [attr.aria-label]="'Navegar para ' + item.label"
+      role="button">
+      <i [class]="item.icon + ' me-1'" aria-hidden="true"></i>
+      {{ item.label }}
+    </a>
+  </div>
+</nav>
