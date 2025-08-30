@@ -16,6 +16,7 @@ export const environment = {
         userAll: 'User.Read.All',
         directory: 'Directory.Read.All',
         group: 'Group.Read.All',
+        auditLog: 'AuditLog.Read.All',
         profile: 'profile',
         email: 'email',
         openid: 'openid'

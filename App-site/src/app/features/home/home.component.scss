@@ -1,0 +1,85 @@
+// Cores customizadas para Azure
+$azure-blue: #0078d4;
+$azure-dark: #005a9e;
+$purple: #6f42c1;
+$pink: #e83e8c;
+
+// Gradientes customizados
+.bg-gradient {
+  background: linear-gradient(135deg, var(--bs-primary), var(--bs-secondary)) !important;
+}
+
+// Cores customizadas para ícones
+.text-purple {
+  color: $purple !important;
+}
+
+.text-pink {
+  color: $pink !important;
+}
+
+// Animações sutis
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25) !important;
+  }
+}
+
+// Estilo para os botões principais
+.btn-lg {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Estilo para o cabeçalho principal
+header {
+  .display-3 {
+    background: linear-gradient(135deg, #0078d4, #005a9e);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+  }
+}
+
+// Responsividade para cards menores
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .display-3 {
+    font-size: 2.5rem;
+  }
+  
+  .display-1 {
+    font-size: 3rem;
+  }
+}
+
+// Efeito de hover para seções importantes
+.alert {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+// Estilo para listas de funcionalidades
+.list-unstyled li {
+  padding: 0.25rem 0;
+}
+
+// Estilo personalizado para badges de tecnologia
+.badge {
+  font-size: 0.8rem;
+  padding: 0.5rem 0.75rem;
+}

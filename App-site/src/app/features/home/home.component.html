@@ -1,78 +1,453 @@
-<div class="container-fluid bg-dark text-light min-vh-100 d-flex flex-column">
+<div class="container-fluid bg-light text-dark min-vh-100 d-flex flex-column">
   <div class="container py-5">
     
+    <!-- Header Principal -->
     <header class="text-center mb-5">
-      <h1 class="display-4 fw-bold">Repositório Base para Projetos Angular</h1>
-      <p class="lead">
-        Um ponto de partida robusto para novos projetos, com uma estrutura organizada e funcionalidades essenciais.
+      <div class="row justify-content-center align-items-center mb-4">
+        <div class="col-auto">
+          <i class="bi bi-microsoft display-1 text-primary"></i>
+        </div>
+        <div class="col-auto">
+          <h1 class="display-3 fw-bold mb-0">Desafio Azure Brasil Cloud</h1>
+        </div>
+      </div>
+      <p class="lead fs-4">
+        Projeto FullStack demonstrando integração com <strong>Azure Entra ID</strong>
       </p>
+      <div class="row justify-content-center mt-4">
+        <div class="col-lg-8">
+          <div class="alert alert-primary border-0 shadow-lg">
+            <h5 class="alert-heading">
+              <i class="bi bi-trophy-fill me-2"></i>
+              Vaga: Desenvolvedor FullStack – Pleno .NET (Azure) / Vue.js
+            </h5>
+            <p class="mb-0">
+              Aplicação desenvolvida especificamente para demonstrar competências técnicas exigidas na vaga da 
+              <strong>Azure Brasil Cloud</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
     </header>
 
-    
+    <!-- Seção Sobre o Desenvolvedor -->
     <section class="mb-5">
       <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card bg-secondary text-light shadow-lg">
-            <div class="card-body">
-              <h2 class="card-title text-center mb-4"><i class="bi bi-info-circle-fill me-2"></i>Sobre o Projeto</h2>
-              <p>
-                Este repositório foi criado para servir como uma base sólida e organizada para iniciar novas aplicações com Angular.
-                Ele já vem com uma estrutura de pastas bem definida (`core`, `features`, `shared`), facilitando a manutenibilidade e a escalabilidade do código.
-              </p>
-              <p>
-                A base inclui funcionalidades prontas para uso, como um sistema de gerenciamento de usuários — implementado com <strong>Formulários Reativos (Reactive Forms)</strong> para maior controle e testabilidade — e um componente de paginação reutilizável, permitindo que você foque em construir as funcionalidades específicas do seu projeto.
-              </p>
+        <div class="col-lg-10">
+          <div class="card bg-white border-0 shadow-lg">
+            <div class="card-body p-5">
+              <div class="text-center mb-4">
+                <div class="row align-items-center justify-content-center">
+                  <div class="col-auto">
+                    <div class="position-relative">
+                      <img src="gabriel-profile.jpeg" 
+                           alt="Gabriel Vieira" 
+                           class="rounded-circle shadow-lg"
+                           style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #0d6efd;">
+                      <div class="position-absolute bottom-0 end-0">
+                        <span class="badge bg-success rounded-pill p-2">
+                          <i class="bi bi-check-circle-fill"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-auto ms-3">
+                    <h3 class="fw-bold mb-1">Gabriel Vieira de Souza</h3>
+                    <p class="text-primary mb-2 fs-5">Desenvolvedor FullStack .NET | Angular</p>
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <span class="badge bg-primary px-3 py-2">
+                        🥋 Faixa Azul 2º Graus
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-lg-6 mb-4">
+                  <h5 class="text-primary mb-3">
+                    <i class="bi bi-briefcase me-2"></i>
+                    Experiência Profissional
+                  </h5>
+                  <ul class="list-unstyled">
+                    <li class="mb-2">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      <strong>2 anos</strong> de experiência em desenvolvimento .NET
+                    </li>
+                    <li class="mb-2">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      Focado em desenvolvimento de <strong>.NET</strong>.
+                    </li>
+                    <li class="mb-2">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      Desenvolvimento de <strong>APIs RESTful</strong> e microserviços
+                    </li>
+                    <li class="mb-2">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      Frontend moderno com <strong>Angular</strong>
+                    </li>
+                    <li class="mb-2">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      Arquitetura <strong>DDD</strong> e Clean Code practices
+                    </li>
+                    <li class="mb-2">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      Tenho prazer em estudar novas tecnologias e desafios.
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                  <h5 class="text-primary mb-3">
+                    <i class="bi bi-gear-wide-connected me-2"></i>
+                    Tecnologias Core
+                  </h5>
+                  <div class="row">
+                    <div class="col-6">
+                      <ul class="list-unstyled small">
+                        <li>• C# .NET 8</li>
+                        <li>• Entity Framework</li>
+                        <li>• NHibernate</li>
+                        <li>• SQL Server</li>
+                        <li>• Dapper</li>
+                        <li>• Conhecimentos em Docker</li>
+                      </ul>
+                    </div>
+                    <div class="col-6">
+                      <ul class="list-unstyled small">
+                        <li>• Angular/TypeScript</li>
+                        <li>• RxJS</li>
+                        <li>• WPF (Windows Presentation Foundation)</li>
+                        <li>• AWS RDS</li>
+                        <li>• AWS SQS</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-lg-8">
+                  <h5 class="text-primary mb-3">
+                    <i class="bi bi-mortarboard me-2"></i>
+                    Formação & Certificações
+                  </h5>
+                  <ul class="list-unstyled">
+                    <li class="mb-2">
+                      <i class="bi bi-award me-2 text-warning"></i>
+                      <strong>Tecnólogo em Análise e Desenvolvimento de Sistemas - Andamento</strong>
+                    </li>
+                    <li class="mb-2">
+                      <i class="bi bi-award me-2 text-warning"></i>
+                      <strong>Administração de empresas - Concluído</strong>
+                    </li>
+                    <li class="mb-2">
+                      <i class="bi bi-code-slash me-2 text-success"></i>
+                      Estudo 4 horas por dia. Foco do estudo: Programação, Filosofia e autoconhecimento.
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="col-lg-4">
+                  <h5 class="text-primary mb-3">
+                    <i class="bi bi-star me-2"></i>
+                    Contato Profissional
+                  </h5>
+                  <div class="d-flex flex-column gap-2">
+                    <a href="https://www.linkedin.com/in/gabriel-vieira-4443ba109/" target="_blank" class="btn btn-outline-primary">
+                      <i class="bi bi-linkedin me-2"></i>
+                      LinkedIn Profile
+                    </a>
+                    <a href="https://github.com/GabrielCezario1" target="_blank" class="btn btn-outline-dark">
+                      <i class="bi bi-github me-2"></i>
+                      GitHub Portfolio
+                    </a>
+                  </div>
+                  
+                  <div class="mt-4">
+                    <h6 class="text-muted mb-2">
+                      <i class="bi bi-geo-alt me-1"></i>
+                      Localização
+                    </h6>
+                    <p class="small mb-0">Vila Velha, ES - Brasil</p>
+                    <p class="small text-muted">Disponível para trabalho remoto</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="alert alert-light border-start border-primary border-4 mt-4">
+                <h6 class="alert-heading">
+                  <i class="bi bi-lightbulb-fill text-warning me-2"></i>
+                  Visão Profissional
+                </h6>
+                <p class="mb-0 small">
+                  Me sinto bem em iniciar novos produtos, sempre buscando solucionar as necessidades do usuário e ver como a tecnologia pode
+                  resolver problemas reais. Acredito que a comunicação é fundamental para o sucesso de qualquer
+                  projeto. Prefiro participar de projetos que vão elevar meu nível técnico e gosto de fazer documentações.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    
+    <!-- Seção de Funcionalidades Implementadas -->
     <section class="mb-5">
-      <h2 class="text-center mb-4"><i class="bi bi-tools me-2"></i>Tecnologias Utilizadas</h2>
+      <h2 class="text-center mb-4">
+        <i class="bi bi-check-circle-fill text-success me-2"></i>
+        Funcionalidades Implementadas
+      </h2>
       <div class="row">
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 bg-secondary text-light text-center shadow">
-            <div class="card-body">
-              <i class="bi bi-braces-asterisk display-3"></i>
-              <h5 class="card-title mt-3">Angular</h5>
-              <p class="card-text">Framework principal para a construção da interface.</p>
+        <div class="col-lg-6 mb-4">
+          <div class="card bg-gradient h-100 shadow-lg" style="background: linear-gradient(135deg, #0078d4, #005a9e);">
+            <div class="card-body text-white">
+              <h5 class="card-title">
+                <i class="bi bi-shield-lock-fill me-2"></i>
+                Autenticação Azure Entra ID
+              </h5>
+              <ul class="list-unstyled">
+                <li><i class="bi bi-check text-success me-2"></i>Login/Logout com Microsoft Account</li>
+                <li><i class="bi bi-check text-success me-2"></i>Integração MSAL Angular + .NET</li>
+                <li><i class="bi bi-check text-success me-2"></i>JWT Bearer Token Authentication</li>
+                <li><i class="bi bi-check text-success me-2"></i>Refresh automático de tokens</li>
+              </ul>
             </div>
           </div>
         </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 bg-secondary text-light text-center shadow">
-            <div class="card-body">
-              <i class="bi bi-bootstrap-fill display-3"></i>
-              <h5 class="card-title mt-3">Bootstrap</h5>
-              <p class="card-text">Para componentes de UI e layout responsivo.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 bg-secondary text-light text-center shadow">
-            <div class="card-body">
-              <i class="bi bi-filetype-scss display-3"></i>
-              <h5 class="card-title mt-3">SCSS</h5>
-              <p class="card-text">Pré-processador de CSS para estilos avançados.</p>
+        <div class="col-lg-6 mb-4">
+          <div class="card bg-gradient h-100 shadow-lg" style="background: linear-gradient(135deg, #107c10, #0b5394);">
+            <div class="card-body text-white">
+              <h5 class="card-title">
+                <i class="bi bi-graph-up me-2"></i>
+                Microsoft Graph API
+              </h5>
+              <ul class="list-unstyled">
+                <li><i class="bi bi-check text-success me-2"></i>Perfil completo do usuário</li>
+                <li><i class="bi bi-check text-success me-2"></i>Informações do Tenant</li>
+                <li><i class="bi bi-check text-success me-2"></i>Grupos e memberships</li>
+                <li><i class="bi bi-check text-success me-2"></i>Usuários do diretório</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    
+    <!-- Stack Tecnológico -->
+    <section class="mb-5">
+      <h2 class="text-center mb-4">
+        <i class="bi bi-stack me-2"></i>
+        Stack Tecnológico
+      </h2>
+      
+      <!-- Backend -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h4 class="text-primary mb-3">
+            <i class="bi bi-server me-2"></i>Backend (.NET 8)
+          </h4>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-code-square display-4 text-primary"></i>
+              <h6 class="card-title mt-2">.NET 8 WebAPI</h6>
+              <small class="text-muted">REST API com Swagger</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-diagram-3 display-4 text-success"></i>
+              <h6 class="card-title mt-2">DDD Architecture</h6>
+              <small class="text-muted">Domain-Driven Design</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-database display-4 text-warning"></i>
+              <h6 class="card-title mt-2">Entity Framework</h6>
+              <small class="text-muted">Code First + MySQL</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-arrow-repeat display-4 text-info"></i>
+              <h6 class="card-title mt-2">AutoMapper</h6>
+              <small class="text-muted">Object Mapping</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frontend -->
+      <div class="row">
+        <div class="col-12">
+          <h4 class="text-primary mb-3">
+            <i class="bi bi-phone me-2"></i>Frontend (Angular 19)
+          </h4>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-braces-asterisk display-4 text-danger"></i>
+              <h6 class="card-title mt-2">Angular 19</h6>
+              <small class="text-muted">Standalone Components</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-shield-check display-4 text-primary"></i>
+              <h6 class="card-title mt-2">MSAL Angular</h6>
+              <small class="text-muted">Microsoft Auth Library</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-bootstrap-fill display-4 text-purple"></i>
+              <h6 class="card-title mt-2">Bootstrap 5</h6>
+              <small class="text-muted">UI Framework</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 bg-white border shadow">
+            <div class="card-body text-center">
+              <i class="bi bi-filetype-scss display-4 text-pink"></i>
+              <h6 class="card-title mt-2">SCSS + RxJS</h6>
+              <small class="text-muted">Reactive Programming</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Padrões e Práticas -->
+    <section class="mb-5">
+      <h2 class="text-center mb-4">
+        <i class="bi bi-gear-fill me-2"></i>
+        Padrões e Boas Práticas
+      </h2>
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <div class="card bg-gradient h-100 shadow-lg" style="background: linear-gradient(135deg, #6f42c1, #e83e8c);">
+            <div class="card-body text-white">
+              <h5 class="card-title">
+                <i class="bi bi-layers-fill me-2"></i>
+                Arquitetura Limpa
+              </h5>
+              <ul class="list-unstyled small">
+                <li>• Separação de responsabilidades</li>
+                <li>• Injeção de dependências</li>
+                <li>• SOLID Principles</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <div class="card bg-gradient h-100 shadow-lg" style="background: linear-gradient(135deg, #fd7e14, #e63946);">
+            <div class="card-body text-white">
+              <h5 class="card-title">
+                <i class="bi bi-shield-lock me-2"></i>
+                Segurança
+              </h5>
+              <ul class="list-unstyled small">
+                <li>• OAuth 2.0 / OpenID Connect</li>
+                <li>• JWT Token Validation</li>
+                <li>• CORS configurado</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <div class="card bg-gradient h-100 shadow-lg" style="background: linear-gradient(135deg, #20c997, #0d6efd);">
+            <div class="card-body text-white">
+              <h5 class="card-title">
+                <i class="bi bi-code-slash me-2"></i>
+                Qualidade de Código
+              </h5>
+              <ul class="list-unstyled small">
+                <li>• TypeScript strict mode</li>
+                <li>• Reactive Forms</li>
+                <li>• Error handling robusto</li>
+                <li>• Logging estruturado</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demonstração das Competências -->
+    <section class="mb-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="card bg-white border shadow-lg">
+            <div class="card-body">
+              <h3 class="card-title text-center mb-4">
+                <i class="bi bi-award-fill text-warning me-2"></i>
+                Demonstração de Competências
+              </h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <h5><i class="bi bi-cloud-arrow-up-fill text-primary me-2"></i>Azure Experience</h5>
+                  <ul class="list-unstyled">
+                    <li>✅ Azure Entra ID (Azure Active Directory)</li>
+                    <li>✅ Microsoft Graph API Integration</li>
+                    <li>✅ MSAL Authentication flows</li>
+                    <li>✅ Tenant and user management</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h5><i class="bi bi-code-square text-success me-2"></i>Development Skills</h5>
+                  <ul class="list-unstyled">
+                    <li>✅ .NET 8 Web API development</li>
+                    <li>✅ Angular SPA architecture</li>
+                    <li>✅ RESTful API design</li>
+                    <li>✅ Modern frontend patterns</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
     <section class="text-center">
-      <h2 class="mb-3">Pronto para Começar?</h2>
-      <p class="lead mb-4">Explore as funcionalidades do sistema.</p>
+      <h2 class="mb-3">
+        <i class="bi bi-rocket-takeoff me-2"></i>
+        Explore as Funcionalidades
+      </h2>
+      <p class="lead mb-4">Teste a integração completa com Azure AD e Microsoft Graph</p>
       <div class="d-flex flex-wrap justify-content-center gap-3">
-        <a routerLink="/usuarios" class="btn btn-primary btn-lg shadow-lg">
+        <a routerLink="/profile" class="btn btn-primary btn-lg shadow-lg">
+          <i class="bi bi-person-vcard-fill me-2"></i>Perfil Azure AD
+        </a>
+        <a routerLink="/usuarios" class="btn btn-outline-primary btn-lg shadow-lg">
           <i class="bi bi-people-fill me-2"></i>Gerenciar Usuários
         </a>
-        <a routerLink="/profile" class="btn btn-outline-light btn-lg shadow-lg">
-          <i class="bi bi-person-vcard me-2"></i>Meu Perfil Azure
+        <a routerLink="/test" class="btn btn-outline-success btn-lg shadow-lg">
+          <i class="bi bi-gear-fill me-2"></i>Testes da API
         </a>
+      </div>
+      
+      <div class="mt-5 pt-4 border-top border-secondary">
+        <p class="text-muted">
+          <i class="bi bi-github me-2"></i>
+          Desenvolvido por <strong>Gabriel Cezário</strong> para a vaga de Desenvolvedor FullStack na Azure Brasil
+        </p>
       </div>
     </section>
   </div>

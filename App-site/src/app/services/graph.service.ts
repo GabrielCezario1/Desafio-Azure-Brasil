@@ -74,7 +74,12 @@ export class GraphService {
   public userProfile$ = this.userProfileSubject.asObservable();
 
   getUserProfile(): Observable<UserProfile> {
-    return this.authService.getAccessToken(['User.Read', 'Directory.Read.All', 'Group.Read.All']).pipe(
+    return this.authService.getAccessToken([
+      'User.Read', 
+      'Directory.Read.All', 
+      'Group.Read.All',
+      'AuditLog.Read.All' 
+    ]).pipe(
       switchMap(token => {
         const headers = this.getHeaders(token);
         
@@ -138,23 +143,30 @@ export class GraphService {
       })
     );
   }
-
+ 
   private getSignInActivity(headers: HttpHeaders): Observable<SignInActivity> {
     return this.http.get<SignInActivity>(`${this.BETA_ENDPOINT}/me?$select=signInActivity`, { headers }).pipe(
       map((response: any) => response.signInActivity || {}),
       catchError(error => {
-        console.error('❌ GraphService: Erro ao obter atividade de login:', error);
-        return throwError(() => error);
+        if (error.status === 403) {
+          console.warn('⚠️ GraphService: Atividade de login não disponível (permissões insuficientes)');
+        } else {
+          console.error('❌ GraphService: Erro ao obter atividade de login:', error);
+        }
+        return of({});
       })
     );
   }
-
+ 
   private getRecentTenantUsers(headers: HttpHeaders): Observable<GraphUser[]> {
-    return this.http.get<{ value: GraphUser[] }>(`${this.GRAPH_ENDPOINT}/users?$top=10&$orderby=createdDateTime desc`, { headers }).pipe(
+    return this.http.get<{ value: GraphUser[] }>(`${this.GRAPH_ENDPOINT}/users?$top=10&$orderby=displayName`, { headers }).pipe(
       map(response => response.value || []),
       catchError(error => {
-        console.error('❌ GraphService: Erro ao obter usuários recentes:', error);
-        return of([]);
+        console.error('❌ GraphService: Erro ao obter usuários do tenant:', error);
+        return this.http.get<{ value: GraphUser[] }>(`${this.GRAPH_ENDPOINT}/users?$top=10`, { headers }).pipe(
+          map(response => response.value || []),
+          catchError(() => of([]))
+        );
       })
     );
   }
@@ -178,12 +190,19 @@ export class GraphService {
     return this.authService.getAccessToken(['User.Read.All']).pipe(
       switchMap(token => {
         const headers = this.getHeaders(token);
-        return this.http.get<{ value: GraphUser[] }>(`${this.GRAPH_ENDPOINT}/users?$top=${top}`, { headers });
+        return this.http.get<{ value: GraphUser[] }>(`${this.GRAPH_ENDPOINT}/users?$top=${top}&$orderby=displayName`, { headers });
       }),
       map(response => response.value || []),
       catchError(error => {
         console.error('❌ GraphService: Erro ao obter usuários do tenant:', error);
-        return throwError(() => error);
+        return this.authService.getAccessToken(['User.Read.All']).pipe(
+          switchMap(token => {
+            const headers = this.getHeaders(token);
+            return this.http.get<{ value: GraphUser[] }>(`${this.GRAPH_ENDPOINT}/users?$top=${top}`, { headers });
+          }),
+          map(response => response.value || []),
+          catchError(() => of([]))
+        );
       })
     );
   }

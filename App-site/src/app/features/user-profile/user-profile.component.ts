@@ -59,7 +59,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   changeTab(tab: 'overview' | 'tenant' | 'groups' | 'users'): void {
     this.activeTab = tab;
     
-    // Carregar dados adicionais conforme a aba
     if (tab === 'users' && this.tenantUsers.length === 0) {
       this.loadTenantUsers();
     } else if (tab === 'groups' && this.tenantGroups.length === 0) {
@@ -136,6 +135,34 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     } catch {
       return 'Data inválida';
     }
+  }
+
+  getCurrentSessionTime(): string {
+    // Simular início da sessão atual (quando o componente foi carregado)
+    const sessionStart = new Date();
+    return sessionStart.toLocaleString('pt-BR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  getLastLocalAccess(): string {
+    const lastAccess = localStorage.getItem('lastAppAccess');
+    if (lastAccess) {
+      return new Date(lastAccess).toLocaleString('pt-BR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    localStorage.setItem('lastAppAccess', new Date().toISOString());
+    return 'Primeiro acesso neste dispositivo';
   }
 
   getGroupTypeDisplay(groupTypes: string[]): string {

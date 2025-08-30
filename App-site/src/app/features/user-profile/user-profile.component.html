@@ -1,6 +1,5 @@
 <div class="container-fluid bg-light min-vh-100 py-4">
   <div class="container">
-    <!-- Quick Navigation -->
     <nav class="bg-white p-3 rounded shadow-sm mb-4 border-start border-primary border-4">
       <div class="d-flex flex-wrap gap-2">
         <a routerLink="/home" class="btn btn-outline-secondary btn-sm">
@@ -22,7 +21,6 @@
       </div>
     </nav>
 
-    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="mb-0 text-dark fw-semibold">
         <i class="bi bi-person-circle me-2 text-primary"></i>
@@ -37,7 +35,6 @@
       </button>
     </div>
 
-    <!-- Loading State -->
     <div *ngIf="isLoading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Carregando...</span>
@@ -45,16 +42,13 @@
       <p class="mt-3 text-muted">Carregando informações do perfil...</p>
     </div>
 
-    <!-- Error State -->
     <div *ngIf="error && !isLoading" class="alert alert-danger rounded shadow-sm">
       <i class="bi bi-exclamation-triangle me-2"></i>
       {{ error }}
     </div>
 
-    <!-- Main Content -->
     <div *ngIf="userProfile && !isLoading" class="bg-white rounded shadow">
       
-      <!-- Navigation Tabs -->
       <ul class="nav nav-tabs border-0 p-3 pb-0" role="tablist">
         <li class="nav-item me-1" role="presentation">
           <button 
@@ -111,13 +105,10 @@
         </li>
       </ul>
 
-      <!-- Tab Content -->
       <div class="tab-content p-4">
         
-        <!-- Overview Tab -->
         <div *ngIf="activeTab === 'overview'" class="tab-pane fade show active">
           <div class="row">
-            <!-- User Basic Info -->
             <div class="col-lg-6 mb-4">
               <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-primary text-white border-0">
@@ -182,9 +173,7 @@
               </div>
             </div>
 
-            <!-- Contact Info & Activity -->
             <div class="col-lg-6 mb-4">
-              <!-- Contact Information -->
               <div class="card border-0 shadow-sm mb-3">
                 <div class="card-header bg-info text-white border-0">
                   <h5 class="card-title mb-0 fw-semibold">
@@ -216,8 +205,7 @@
                 </div>
               </div>
 
-              <!-- Sign-in Activity -->
-              <div class="card border-0 shadow-sm" *ngIf="userProfile.signInActivity">
+              <div class="card border-0 shadow-sm">
                 <div class="card-header bg-success text-white border-0">
                   <h5 class="card-title mb-0 fw-semibold">
                     <i class="bi bi-clock-history me-2"></i>
@@ -225,25 +213,45 @@
                   </h5>
                 </div>
                 <div class="card-body">
-                  <div class="row mb-3" *ngIf="userProfile.signInActivity.lastSignInDateTime">
-                    <div class="col-5 fw-semibold text-dark">Último Login:</div>
-                    <div class="col-7">{{ formatDate(userProfile.signInActivity.lastSignInDateTime) }}</div>
-                  </div>
-                  
-                  <div class="row mb-3" *ngIf="userProfile.signInActivity.lastSuccessfulSignInDateTime">
-                    <div class="col-5 fw-semibold text-dark">Último Sucesso:</div>
-                    <div class="col-7">{{ formatDate(userProfile.signInActivity.lastSuccessfulSignInDateTime) }}</div>
-                  </div>
-                  
-                  <div class="row" *ngIf="userProfile.signInActivity.lastNonInteractiveSignInDateTime">
-                    <div class="col-5 fw-semibold text-dark">Último N.I.:</div>
-                    <div class="col-7">{{ formatDate(userProfile.signInActivity.lastNonInteractiveSignInDateTime) }}</div>
+                  <div *ngIf="userProfile.signInActivity && (userProfile.signInActivity.lastSignInDateTime || userProfile.signInActivity.lastSuccessfulSignInDateTime)">
+                    <div class="row mb-3" *ngIf="userProfile.signInActivity.lastSignInDateTime">
+                      <div class="col-5 fw-semibold text-dark">Último Login:</div>
+                      <div class="col-7">{{ formatDate(userProfile.signInActivity.lastSignInDateTime) }}</div>
+                    </div>
+                    
+                    <div class="row mb-3" *ngIf="userProfile.signInActivity.lastSuccessfulSignInDateTime">
+                      <div class="col-5 fw-semibold text-dark">Último Sucesso:</div>
+                      <div class="col-7">{{ formatDate(userProfile.signInActivity.lastSuccessfulSignInDateTime) }}</div>
+                    </div>
+                    
+                    <div class="row" *ngIf="userProfile.signInActivity.lastNonInteractiveSignInDateTime">
+                      <div class="col-5 fw-semibold text-dark">Último N.I.:</div>
+                      <div class="col-7">{{ formatDate(userProfile.signInActivity.lastNonInteractiveSignInDateTime) }}</div>
+                    </div>
                   </div>
 
-                  <div *ngIf="!userProfile.signInActivity.lastSignInDateTime && !userProfile.signInActivity.lastSuccessfulSignInDateTime" 
-                       class="text-center text-muted py-3">
-                    <i class="bi bi-info-circle me-2"></i>
-                    Dados de atividade não disponíveis
+                  <div *ngIf="!userProfile.signInActivity?.lastSignInDateTime && !userProfile.signInActivity?.lastSuccessfulSignInDateTime">
+                    <div class="row mb-3">
+                      <div class="col-5 fw-semibold text-dark">Sessão Atual:</div>
+                      <div class="col-7">{{ getCurrentSessionTime() }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                      <div class="col-5 fw-semibold text-dark">Último Acesso:</div>
+                      <div class="col-7">{{ getLastLocalAccess() }}</div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="!userProfile.signInActivity?.lastSignInDateTime && !userProfile.signInActivity?.lastSuccessfulSignInDateTime" 
+                       class="mt-3">
+                    <div class="alert alert-warning border-0 mb-0">
+                      <i class="bi bi-info-circle me-2"></i>
+                      <strong>Dados de atividade de login não disponíveis</strong>
+                      <div class="mt-2 small">
+                        Esta funcionalidade requer <strong>Azure AD Premium P1/P2</strong> e permissão 
+                        <code>AuditLog.Read.All</code> para acessar dados de auditoria.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -251,7 +259,6 @@
           </div>
         </div>
 
-        <!-- Tenant Tab -->
         <div *ngIf="activeTab === 'tenant'" class="tab-pane fade show active">
           <div class="card border-0 shadow-sm">
             <div class="card-header bg-warning text-dark border-0">
@@ -323,7 +330,6 @@
           </div>
         </div>
 
-        <!-- Groups Tab -->
         <div *ngIf="activeTab === 'groups'" class="tab-pane fade show active">
           <div class="card border-0 shadow-sm">
             <div class="card-header text-white border-0" style="background: linear-gradient(135deg, #6f42c1, #e83e8c);">
@@ -363,7 +369,6 @@
           </div>
         </div>
 
-        <!-- Users Tab -->
         <div *ngIf="activeTab === 'users'" class="tab-pane fade show active">
           <div class="card border-0 shadow-sm">
             <div class="card-header bg-dark text-white border-0">
@@ -374,13 +379,11 @@
               </h5>
             </div>
             <div class="card-body">
-              <!-- Loading tenant data -->
               <div *ngIf="loadingTenantData" class="text-center py-4">
                 <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
                 Carregando usuários do tenant...
               </div>
               
-              <!-- Users list -->
               <div *ngIf="tenantUsers.length > 0 && !loadingTenantData" class="users-list">
                 <div class="table-responsive">
                   <table class="table table-hover align-middle">
